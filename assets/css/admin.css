@@ -1,0 +1,27 @@
+.wrap h1 {
+    margin-bottom: 20px;
+}
+
+.wrap .form-table th {
+    width: 200px;
+    padding: 20px 10px;
+}
+
+.wrap .form-table td {
+    padding: 10px;
+}
+
+.wrap .form-table input[type="text"],
+.wrap .form-table input[type="url"],
+.wrap .form-table textarea {
+    width: 100%;
+}
+
+.wrap .description {
+    font-size: 12px;
+    color: #666;
+}
+
+.wrap .button {
+    margin-top: 10px;
+}
