@@ -3,10 +3,16 @@
  * Plugin Name: Maintenance Mode
  * Plugin URI: https://github.com/Kilian-Schwarz/WordPress-maintenance-mode
  * Description: Displays a customizable Maintenance Mode page.
- * Version: 2.8
+ * Version: 2.9
+ * Requires at least: 5.0
+ * Requires PHP: 7.0
+ * Tested up to: 6.3
  * Author: Kilian Schwarz
  * Author URI: https://github.com/Kilian-Schwarz
  * License: GPL-3.0
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
+ * Text Domain: maintenance-mode
+ * Domain Path: /languages
  */
 
 // Prevent direct access
@@ -90,11 +96,15 @@ function mm_ajax_preview() {
         'mm_favicon_image_id' => isset($_POST['mm_favicon_image_id']) ? intval($_POST['mm_favicon_image_id']) : get_option('mm_favicon_image_id'),
         'mm_custom_html' => isset($_POST['mm_custom_html']) ? wp_kses_post($_POST['mm_custom_html']) : get_option('mm_custom_html'),
         'mm_custom_css' => isset($_POST['mm_custom_css']) ? wp_strip_all_tags($_POST['mm_custom_css']) : get_option('mm_custom_css'),
-        // Add other options as needed
+        'mm_social_links' => isset($_POST['mm_social_links']) ? array_map('esc_url_raw', $_POST['mm_social_links']) : get_option('mm_social_links', array()),
     );
 
-    // Include the maintenance page template with overridden options
-    include MM_PLUGIN_DIR . 'views/maintenance-preview.php';
+    // Set global options variable
+    global $mm_options;
+    $mm_options = $options;
+
+    // Include the maintenance page template
+    include MM_PLUGIN_DIR . 'views/maintenance.php';
 
     exit();
 }
