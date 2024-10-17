@@ -1,17 +1,29 @@
 jQuery(document).ready(function($){
-    // Initialisierung des Farbpickers
+    // Initialize Color Picker
     $('.mm-color-field').wpColorPicker();
 
-    // Hintergrundbild Upload
-    var mediaUploader;
-    $('#mm_upload_background_image_button').click(function(e) {
+    // Tab Navigation
+    $('.mm-nav-tab').click(function(e){
         e.preventDefault();
-        if (mediaUploader) {
-            mediaUploader.open();
-            return;
-        }
-        mediaUploader = wp.media.frames.file_frame = wp.media({
-            title: 'Hintergrundbild auswählen',
+        var tab = $(this).attr('href');
+
+        $('.mm-nav-tab').removeClass('mm-nav-tab-active');
+        $(this).addClass('mm-nav-tab-active');
+
+        $('.mm-tab-content').removeClass('mm-active');
+        $(tab).addClass('mm-active');
+    });
+
+    // Media Upload
+    var mediaUploader;
+    $('.mm-upload-button').click(function(e) {
+        e.preventDefault();
+        var button = $(this);
+        var target = $('#' + button.data('target'));
+        var preview = $('#' + button.data('target') + '_preview');
+
+        mediaUploader = wp.media({
+            title: 'Bild auswählen',
             button: {
                 text: 'Bild auswählen'
             },
@@ -19,47 +31,20 @@ jQuery(document).ready(function($){
         });
         mediaUploader.on('select', function() {
             var attachment = mediaUploader.state().get('selection').first().toJSON();
-            $('#mm_background_image_id').val(attachment.id);
-            $('#mm_background_image_preview').attr('src', attachment.url).show();
-            $('#mm_remove_background_image_button').show();
+            target.val(attachment.id);
+            preview.attr('src', attachment.url).show();
+            button.siblings('.mm-remove-button').show();
         });
         mediaUploader.open();
     });
 
-    $('#mm_remove_background_image_button').click(function(e){
+    $('.mm-remove-button').click(function(e){
         e.preventDefault();
-        $('#mm_background_image_id').val('');
-        $('#mm_background_image_preview').hide();
-        $(this).hide();
-    });
-
-    // Logo Upload
-    $('#mm_upload_logo_image_button').click(function(e) {
-        e.preventDefault();
-        if (mediaUploader) {
-            mediaUploader.open();
-            return;
-        }
-        mediaUploader = wp.media.frames.file_frame = wp.media({
-            title: 'Logo auswählen',
-            button: {
-                text: 'Logo auswählen'
-            },
-            multiple: false
-        });
-        mediaUploader.on('select', function() {
-            var attachment = mediaUploader.state().get('selection').first().toJSON();
-            $('#mm_logo_image_id').val(attachment.id);
-            $('#mm_logo_image_preview').attr('src', attachment.url).show();
-            $('#mm_remove_logo_image_button').show();
-        });
-        mediaUploader.open();
-    });
-
-    $('#mm_remove_logo_image_button').click(function(e){
-        e.preventDefault();
-        $('#mm_logo_image_id').val('');
-        $('#mm_logo_image_preview').hide();
+        var button = $(this);
+        var target = $('#' + button.data('target'));
+        var preview = $('#' + button.data('target') + '_preview');
+        target.val('');
+        preview.hide();
         $(this).hide();
     });
 });
