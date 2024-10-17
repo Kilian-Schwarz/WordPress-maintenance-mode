@@ -3,7 +3,7 @@
 /* Import Fira Mono Font */
 @font-face {
   font-family: 'Fira Mono';
-  src: url('FiraMono-Medium.woff') format('woff');
+  src: url('assets/css/FiraMono-Medium.woff') format('woff');
 }
 
 /* Base Styles */
@@ -15,6 +15,7 @@ body {
   color: #ECEFF4;
   font-family: 'Fira Mono', monospace;
   background-color: #1F2532; /* Set a default background color */
+  overflow: hidden; /* Prevent scrolling */
 }
 
 .maintenance-container {
@@ -26,6 +27,7 @@ body {
   min-height: 100vh;
   background-color: rgba(31, 37, 50, 0.4); /* Semi-transparent overlay */
   padding: 20px;
+  box-sizing: border-box;
 }
 
 .maintenance-logo {
@@ -37,6 +39,7 @@ body {
   font-size: 48px; /* Will be overridden by inline styles if specified */
   margin-bottom: 40px;
   letter-spacing: -1px;
+  user-select: none; /* Prevent text selection */
 }
 
 .countdown {
@@ -52,6 +55,8 @@ body {
 
 #countdown {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 #countdown > div {

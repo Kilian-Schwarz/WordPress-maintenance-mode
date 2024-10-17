@@ -92,7 +92,7 @@ function mm_render_settings_page() {
                             <tr>
                                 <th scope="row">Enddatum des Timers</th>
                                 <td>
-                                    <input type="datetime-local" name="mm_timer_end_date" value="<?php echo esc_attr(date('Y-m-d\TH:i', strtotime(get_option('mm_timer_end_date', date('Y-m-d H:i:s'))))); ?>" />
+                                    <input type="datetime-local" name="mm_timer_end_date" value="<?php echo esc_attr(date('Y-m-d\TH:i', strtotime(get_option('mm_timer_end_date', date('Y-m-d H:i:s'))))); ?>" min="<?php echo date('Y-m-d\TH:i'); ?>" />
                                 </td>
                             </tr>
                             <tr>

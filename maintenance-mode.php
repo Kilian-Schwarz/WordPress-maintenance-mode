@@ -3,7 +3,7 @@
  * Plugin Name: Maintenance Mode
  * Plugin URI: https://github.com/Kilian-Schwarz/WordPress-maintenance-mode
  * Description: Displays a customizable Maintenance Mode page.
- * Version: 2.7
+ * Version: 2.8
  * Author: Kilian Schwarz
  * Author URI: https://github.com/Kilian-Schwarz
  * License: GPL-3.0
@@ -54,7 +54,7 @@ function mm_maintenance_mode() {
 
     global $pagenow;
     $timer_end_date = strtotime(get_option('mm_timer_end_date'));
-    $current_time = time();
+    $current_time = current_time('timestamp');
 
     if ($current_time > $timer_end_date && get_option('mm_auto_disable')) {
         update_option('mm_active', 0);

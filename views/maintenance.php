@@ -61,6 +61,8 @@ $social_links = get_option('mm_social_links', array());
     <div class="countdown">
         <p>Wir sind zurück in:</p>
         <div id="countdown">
+            <div><span id="years">00</span><span>Jahre</span></div>
+            <div><span id="months">00</span><span>Monate</span></div>
             <div><span id="days">00</span><span>Tage</span></div>
             <div><span id="hours">00</span><span>Stunden</span></div>
             <div><span id="minutes">00</span><span>Minuten</span></div>
@@ -70,15 +72,17 @@ $social_links = get_option('mm_social_links', array());
     <script>
     // Countdown Script
     (function(){
-        var endDate = new Date("<?php echo esc_js(date('M d, Y H:i:s', strtotime($timer_end_date))); ?>").getTime();
+        var endDate = new Date("<?php echo esc_js(date('M d, Y H:i:s', strtotime($timer_end_date))); ?>");
         var countdown = document.getElementById("countdown");
+        var yearsSpan = document.getElementById("years");
+        var monthsSpan = document.getElementById("months");
         var daysSpan = document.getElementById("days");
         var hoursSpan = document.getElementById("hours");
         var minutesSpan = document.getElementById("minutes");
         var secondsSpan = document.getElementById("seconds");
 
         function updateCountdown() {
-            var now = new Date().getTime();
+            var now = new Date();
             var distance = endDate - now;
 
             if (distance < 0) {
@@ -88,12 +92,57 @@ $social_links = get_option('mm_social_links', array());
                 return;
             }
 
-            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
-            var minutes = Math.floor((distance / (1000 * 60)) % 60);
-            var seconds = Math.floor((distance / 1000) % 60);
+            var years = endDate.getFullYear() - now.getFullYear();
+            var months = endDate.getMonth() - now.getMonth();
+            var days = endDate.getDate() - now.getDate();
+            var hours = endDate.getHours() - now.getHours();
+            var minutes = endDate.getMinutes() - now.getMinutes();
+            var seconds = endDate.getSeconds() - now.getSeconds();
 
-            daysSpan.textContent = ('0' + days).slice(-2);
+            if (seconds < 0) {
+                seconds += 60;
+                minutes--;
+            }
+            if (minutes < 0) {
+                minutes += 60;
+                hours--;
+            }
+            if (hours < 0) {
+                hours += 24;
+                days--;
+            }
+            if (days < 0) {
+                var lastMonth = new Date(endDate.getFullYear(), endDate.getMonth(), 0);
+                days += lastMonth.getDate();
+                months--;
+            }
+            if (months < 0) {
+                months += 12;
+                years--;
+            }
+
+            // Update display
+            if (years > 0) {
+                yearsSpan.textContent = ('0' + years).slice(-2);
+                yearsSpan.parentElement.style.display = 'inline-block';
+            } else {
+                yearsSpan.parentElement.style.display = 'none';
+            }
+
+            if (months > 0 || years > 0) {
+                monthsSpan.textContent = ('0' + months).slice(-2);
+                monthsSpan.parentElement.style.display = 'inline-block';
+            } else {
+                monthsSpan.parentElement.style.display = 'none';
+            }
+
+            if (days > 0 || months > 0 || years > 0) {
+                daysSpan.textContent = ('0' + days).slice(-2);
+                daysSpan.parentElement.style.display = 'inline-block';
+            } else {
+                daysSpan.parentElement.style.display = 'none';
+            }
+
             hoursSpan.textContent = ('0' + hours).slice(-2);
             minutesSpan.textContent = ('0' + minutes).slice(-2);
             secondsSpan.textContent = ('0' + seconds).slice(-2);
