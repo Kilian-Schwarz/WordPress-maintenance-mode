@@ -115,7 +115,7 @@ $social_links = get_option('mm_social_links', array());
         <div class="social-links">
             <?php foreach ($social_links as $platform => $url): ?>
                 <?php if ($url): ?>
-                    <a href="<?php echo esc_url($url); ?>" target="_blank"><?php echo ucfirst($platform); ?></a>
+                    <a href="<?php echo esc_url($url); ?>" target="_blank" class="<?php echo esc_attr(strtolower($platform)); ?>"></a>
                 <?php endif; ?>
             <?php endforeach; ?>
         </div>

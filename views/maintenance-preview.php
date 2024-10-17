@@ -3,7 +3,6 @@
  * Maintenance Mode Preview Template
  */
 
-// Use options from the $options array instead of get_option()
 
 $text = $options['mm_text'];
 $background_image_id = $options['mm_background_image_id'];
@@ -16,12 +15,15 @@ $font_italic = $options['mm_font_italic'] ? 'italic' : 'normal';
 $font_underline = $options['mm_font_underline'] ? 'underline' : 'none';
 $font_strikethrough = $options['mm_font_strikethrough'] ? 'line-through' : 'none';
 $enable_glitch = $options['mm_enable_glitch'];
+$enable_timer = $options['mm_enable_timer'];
+$timer_end_date = $options['mm_timer_end_date'];
 $custom_html = $options['mm_custom_html'];
 $custom_css = $options['mm_custom_css'];
 $logo_image_id = $options['mm_logo_image_id'];
 $logo_image = $logo_image_id ? wp_get_attachment_url($logo_image_id) : '';
 $favicon_image_id = $options['mm_favicon_image_id'];
 $favicon_image = $favicon_image_id ? wp_get_attachment_url($favicon_image_id) : '';
+$social_links = get_option('mm_social_links', array()); // Get social links
 ?>
 <!DOCTYPE html>
 <html>
@@ -32,6 +34,7 @@ $favicon_image = $favicon_image_id ? wp_get_attachment_url($favicon_image_id) : 
     <?php endif; ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
+        /* Include necessary CSS directly */
         <?php include plugin_dir_path(__FILE__) . '../assets/css/maintenance.css'; ?>
         body {
             color: <?php echo esc_attr($font_color); ?>;
@@ -56,12 +59,93 @@ $favicon_image = $favicon_image_id ? wp_get_attachment_url($favicon_image_id) : 
         <?php echo esc_html($text); ?>
     </div>
 
+    <?php if ($enable_timer && !empty($timer_end_date)): ?>
+    <div class="countdown">
+        <p>Wir sind zurück in:</p>
+        <div id="countdown">
+            <div><span id="days">00</span><span>Tage</span></div>
+            <div><span id="hours">00</span><span>Stunden</span></div>
+            <div><span id="minutes">00</span><span>Minuten</span></div>
+            <div><span id="seconds">00</span><span>Sekunden</span></div>
+        </div>
+    </div>
+    <?php endif; ?>
+
     <?php if ($custom_html): ?>
         <div class="custom-html">
             <?php echo $custom_html; // Custom HTML ?>
         </div>
     <?php endif; ?>
+
+    <?php if (!empty($social_links)): ?>
+        <div class="social-links">
+            <?php foreach ($social_links as $platform => $url): ?>
+                <?php if ($url): ?>
+                    <a href="<?php echo esc_url($url); ?>" target="_blank" class="<?php echo esc_attr(strtolower($platform)); ?>"></a>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
 </div>
+
+<!-- Include necessary JavaScript directly -->
+<?php if ($enable_timer && !empty($timer_end_date)): ?>
+<script>
+    // Countdown Script
+    (function(){
+        var endDate = new Date("<?php echo esc_js(date('M d, Y H:i:s', strtotime($timer_end_date))); ?>").getTime();
+        var countdown = document.getElementById("countdown");
+        var daysSpan = document.getElementById("days");
+        var hoursSpan = document.getElementById("hours");
+        var minutesSpan = document.getElementById("minutes");
+        var secondsSpan = document.getElementById("seconds");
+
+        function updateCountdown() {
+            var now = new Date().getTime();
+            var distance = endDate - now;
+
+            if (distance < 0) {
+                clearInterval(interval);
+                document.querySelector('.countdown p').innerText = "Wir sind wieder online!";
+                countdown.style.display = 'none';
+                return;
+            }
+
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+            var minutes = Math.floor((distance / (1000 * 60)) % 60);
+            var seconds = Math.floor((distance / 1000) % 60);
+
+            daysSpan.textContent = ('0' + days).slice(-2);
+            hoursSpan.textContent = ('0' + hours).slice(-2);
+            minutesSpan.textContent = ('0' + minutes).slice(-2);
+            secondsSpan.textContent = ('0' + seconds).slice(-2);
+        }
+
+        updateCountdown();
+        var interval = setInterval(updateCountdown, 1000);
+    })();
+</script>
+<?php endif; ?>
+
+<?php if ($enable_glitch): ?>
+<style>
+    /* Glitch effect CSS */
+    .glitch-enabled {
+        position: relative;
+        color: <?php echo esc_attr($font_color); ?>;
+        animation: glitch-animation 2s infinite;
+    }
+
+    @keyframes glitch-animation {
+        0% {
+            clip: rect(44px, 9999px, 56px, 0);
+            transform: skew(0.5deg);
+        }
+        /* ... Add more keyframes for the glitch effect ... */
+    }
+</style>
+<?php endif; ?>
 
 </body>
 </html>

@@ -3,7 +3,7 @@
  * Plugin Name: Maintenance Mode
  * Plugin URI: https://github.com/Kilian-Schwarz/WordPress-maintenance-mode
  * Description: Displays a customizable Maintenance Mode page.
- * Version: 2.4
+ * Version: 2.5
  * Author: Kilian Schwarz
  * Author URI: https://github.com/Kilian-Schwarz
  * License: GPL-3.0
@@ -84,6 +84,8 @@ function mm_ajax_preview() {
         'mm_font_underline' => isset($_POST['mm_font_underline']) ? 1 : 0,
         'mm_font_strikethrough' => isset($_POST['mm_font_strikethrough']) ? 1 : 0,
         'mm_enable_glitch' => isset($_POST['mm_enable_glitch']) ? 1 : 0,
+        'mm_enable_timer' => isset($_POST['mm_enable_timer']) ? 1 : 0,
+        'mm_timer_end_date' => isset($_POST['mm_timer_end_date']) ? sanitize_text_field($_POST['mm_timer_end_date']) : get_option('mm_timer_end_date'),
         'mm_logo_image_id' => isset($_POST['mm_logo_image_id']) ? intval($_POST['mm_logo_image_id']) : get_option('mm_logo_image_id'),
         'mm_favicon_image_id' => isset($_POST['mm_favicon_image_id']) ? intval($_POST['mm_favicon_image_id']) : get_option('mm_favicon_image_id'),
         'mm_custom_html' => isset($_POST['mm_custom_html']) ? wp_kses_post($_POST['mm_custom_html']) : get_option('mm_custom_html'),
