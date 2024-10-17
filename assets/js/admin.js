@@ -1,6 +1,9 @@
+// assets/js/admin.js
+
 jQuery(document).ready(function($){
-    // Initialize Color Picker
+    // Initialize Color Pickers
     $('.mm-color-field').wpColorPicker();
+    $('.mm-font-color-field').wpColorPicker();
 
     // Tab Navigation
     $('.mm-nav-tab').click(function(e){
@@ -15,14 +18,13 @@ jQuery(document).ready(function($){
     });
 
     // Media Upload
-    var mediaUploader;
     $('.mm-upload-button').click(function(e) {
         e.preventDefault();
         var button = $(this);
         var target = $('#' + button.data('target'));
         var preview = $('#' + button.data('target') + '_preview');
 
-        mediaUploader = wp.media({
+        var mediaUploader = wp.media({
             title: 'Bild auswählen',
             button: {
                 text: 'Bild auswählen'
@@ -34,6 +36,7 @@ jQuery(document).ready(function($){
             target.val(attachment.id);
             preview.attr('src', attachment.url).show();
             button.siblings('.mm-remove-button').show();
+            $('#mm-settings-form').trigger('change'); // Trigger change for preview update
         });
         mediaUploader.open();
     });
@@ -46,5 +49,33 @@ jQuery(document).ready(function($){
         target.val('');
         preview.hide();
         $(this).hide();
+        $('#mm-settings-form').trigger('change'); // Trigger change for preview update
+    });
+
+    // Update Preview on Form Change
+    $('#mm-settings-form').on('input change', 'input, select, textarea', function() {
+        // Delay to prevent excessive reloads
+        clearTimeout(window.mmPreviewTimeout);
+        window.mmPreviewTimeout = setTimeout(function() {
+            // Serialize form data
+            var formData = $('#mm-settings-form').serialize();
+            $.post(mmAjax.ajax_url + '?action=mm_preview', formData, function(response) {
+                var iframe = document.getElementById('mm-preview-iframe');
+                iframe.contentWindow.document.open();
+                iframe.contentWindow.document.write(response);
+                iframe.contentWindow.document.close();
+            });
+
+            // Update Favicon and Title
+            var faviconId = $('#mm_favicon_image_id').val();
+            if (faviconId) {
+                wp.media.attachment(faviconId).fetch().then(function() {
+                    $('#mm-preview-favicon').attr('src', this.get('url'));
+                });
+            } else {
+                $('#mm-preview-favicon').attr('src', mmAjax.site_icon_url);
+            }
+            $('#mm-preview-title').text($('input[name="mm_text"]').val() + ' - Maintenance Mode');
+        }, 500);
     });
 });

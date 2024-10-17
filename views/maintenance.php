@@ -2,10 +2,17 @@
 /**
  * Maintenance Mode Template
  */
+
 $text = get_option('mm_text', 'Wir sind bald zurück!');
 $background_image_id = get_option('mm_background_image_id');
 $background_image = $background_image_id ? wp_get_attachment_url($background_image_id) : '';
 $background_color = get_option('mm_background_color', '#131313');
+$font_color = get_option('mm_font_color', '#ffffff');
+$font_size = get_option('mm_font_size', '48');
+$font_bold = get_option('mm_font_bold') ? 'bold' : 'normal';
+$font_italic = get_option('mm_font_italic') ? 'italic' : 'normal';
+$font_underline = get_option('mm_font_underline') ? 'underline' : 'none';
+$font_strikethrough = get_option('mm_font_strikethrough') ? 'line-through' : 'none';
 $enable_glitch = get_option('mm_enable_glitch');
 $enable_timer = get_option('mm_enable_timer');
 $timer_end_date = get_option('mm_timer_end_date');
@@ -13,15 +20,29 @@ $custom_html = get_option('mm_custom_html', '');
 $custom_css = get_option('mm_custom_css', '');
 $logo_image_id = get_option('mm_logo_image_id');
 $logo_image = $logo_image_id ? wp_get_attachment_url($logo_image_id) : '';
+$favicon_image_id = get_option('mm_favicon_image_id');
+$favicon_image = $favicon_image_id ? wp_get_attachment_url($favicon_image_id) : '';
 $social_links = get_option('mm_social_links', array());
 ?>
 <!DOCTYPE html>
 <html>
 <head>
     <title><?php echo esc_html(get_bloginfo('name')); ?> - Maintenance Mode</title>
+    <?php if ($favicon_image): ?>
+        <link rel="icon" href="<?php echo esc_url($favicon_image); ?>" sizes="32x32" />
+    <?php endif; ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         <?php include plugin_dir_path(__FILE__) . '../assets/css/maintenance.css'; ?>
+        body {
+            color: <?php echo esc_attr($font_color); ?>;
+        }
+        .maintenance-message {
+            font-size: <?php echo intval($font_size); ?>px;
+            font-weight: <?php echo esc_attr($font_bold); ?>;
+            font-style: <?php echo esc_attr($font_italic); ?>;
+            text-decoration: <?php echo esc_attr($font_underline . ' ' . $font_strikethrough); ?>;
+        }
         <?php echo $custom_css; // Benutzerdefiniertes CSS ?>
     </style>
 </head>

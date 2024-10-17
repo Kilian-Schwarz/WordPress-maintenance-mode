@@ -112,3 +112,44 @@ body {
       text-shadow: -2px -2px #ff00c1, 2px 2px #00fff9;
   }
 }
+
+/* assets/css/maintenance.css */
+
+/* Existing styles remain the same */
+
+/* Example of existing styles */
+
+body {
+  margin: 0;
+  padding: 0;
+  background-size: cover;
+  background-position: center;
+  font-family: 'Fira Mono', monospace;
+}
+
+.maintenance-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+  background-color: rgba(0,0,0,0.5);
+  padding: 20px;
+}
+
+.maintenance-logo {
+  max-width: 200px;
+  margin-bottom: 20px;
+}
+
+.maintenance-message {
+  /* The font-size and styles will be overridden by inline styles */
+  margin-bottom: 40px;
+}
+
+.custom-html {
+  margin-top: 40px;
+}
+
+/* Add any additional styles as needed */

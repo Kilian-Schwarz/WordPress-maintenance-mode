@@ -1,16 +1,19 @@
+/* assets/css/admin.css */
+
 /* Custom Admin Styles */
 
 .mm-wrap {
-    background: #fff;
+    background: #2c3e50;
     padding: 20px;
     border-radius: 8px;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    color: #ecf0f1;
 }
 
 .mm-wrap h1 {
     margin-bottom: 20px;
-    font-size: 24px;
-    color: #333;
+    font-size: 28px;
+    color: #ecf0f1;
 }
 
 .mm-nav-tab-wrapper {
@@ -19,27 +22,32 @@
 
 .mm-nav-tab {
     display: inline-block;
-    padding: 10px 20px;
-    background: #f1f1f1;
-    color: #555;
+    padding: 12px 24px;
+    background: #34495e;
+    color: #ecf0f1;
     text-decoration: none;
-    border-radius: 5px 5px 0 0;
-    margin-right: 2px;
-    font-weight: 600;
+    border-radius: 5px;
+    margin-right: 5px;
+    font-weight: 500;
+    transition: background 0.3s, color 0.3s;
+}
+
+.mm-nav-tab:hover {
+    background: #1abc9c;
+    color: #fff;
 }
 
 .mm-nav-tab-active {
-    background: #fff;
-    border-bottom: 1px solid #fff;
-    color: #0073aa;
+    background: #1abc9c;
+    color: #fff;
 }
 
 .mm-tab-content {
     display: none;
-    background: #fff;
+    background: #34495e;
     padding: 20px;
-    border-radius: 0 5px 5px 5px;
-    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+    border: 1px solid #1abc9c;
 }
 
 .mm-tab-content.mm-active {
@@ -50,18 +58,14 @@
 .mm-remove-button {
     margin-top: 10px;
     margin-right: 10px;
-}
-
-.mm-upload-button {
-    background-color: #0073aa;
-    border-color: #006799;
+    background-color: #1abc9c;
+    border-color: #16a085;
     color: #fff;
 }
 
 .mm-remove-button {
-    background-color: #a00;
-    border-color: #900;
-    color: #fff;
+    background-color: #e74c3c;
+    border-color: #c0392b;
 }
 
 .mm-upload-button:hover,
@@ -69,7 +73,8 @@
     opacity: 0.9;
 }
 
-.mm-color-field {
+.mm-color-field,
+.mm-font-color-field {
     max-width: 100px;
 }
 
@@ -77,6 +82,7 @@
     width: 220px;
     padding: 20px 10px;
     vertical-align: top;
+    color: #ecf0f1;
 }
 
 .form-table td {
@@ -88,11 +94,29 @@
 .form-table textarea,
 .form-table select {
     width: 100%;
+    background: #ecf0f1;
+    color: #2c3e50;
+    border: 1px solid #bdc3c7;
+    padding: 8px;
+    border-radius: 3px;
+}
+
+.form-table input[type="number"] {
+    background: #ecf0f1;
+    color: #2c3e50;
+    border: 1px solid #bdc3c7;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.form-table input[type="checkbox"] {
+    transform: scale(1.2);
+    margin-right: 5px;
 }
 
 .form-table .description {
     font-size: 12px;
-    color: #666;
+    color: #bdc3c7;
 }
 
 .mm-image-preview {
@@ -102,6 +126,100 @@
 .mm-image-preview img {
     max-width: 100%;
     height: auto;
-    border: 1px solid #ccc;
+    border: 1px solid #7f8c8d;
     padding: 5px;
+    border-radius: 3px;
+}
+
+.submit input[type="submit"] {
+    background-color: #1abc9c;
+    border-color: #16a085;
+    color: #fff;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submit input[type="submit"]:hover {
+    background-color: #16a085;
+}
+
+/* Admin Container */
+.mm-admin-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* Settings Form */
+.mm-settings {
+    flex: 1;
+    min-width: 300px;
+}
+
+/* Live Preview */
+.mm-preview {
+    flex: 1;
+    min-width: 300px;
+    margin-left: 20px;
+}
+
+.mm-browser {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.mm-browser-header {
+    background: #f1f1f1;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.mm-browser-tabs {
+    display: flex;
+}
+
+.mm-browser-tab {
+    background: #e0e0e0;
+    padding: 5px 10px;
+    border-radius: 3px 3px 0 0;
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.mm-browser-tab img {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+}
+
+.mm-browser-address-bar input {
+    width: 100%;
+    padding: 5px;
+    border: none;
+    background: #fff;
+    border-radius: 3px;
+    margin-top: 10px;
+}
+
+.mm-browser-address-bar input:focus {
+    outline: none;
+}
+
+#mm-preview-iframe {
+    width: 100%;
+    height: 500px;
+    border: none;
+}
+
+@media (max-width: 800px) {
+    .mm-admin-container {
+        flex-direction: column;
+    }
+    .mm-preview {
+        margin-left: 0;
+        margin-top: 20px;
+    }
 }
