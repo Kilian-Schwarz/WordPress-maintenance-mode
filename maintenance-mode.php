@@ -3,7 +3,7 @@
  * Plugin Name: Maintenance Mode
  * Plugin URI: https://github.com/Kilian-Schwarz/WordPress-maintenance-mode
  * Description: Displays a customizable Maintenance Mode page.
- * Version: 2.5
+ * Version: 2.6
  * Author: Kilian Schwarz
  * Author URI: https://github.com/Kilian-Schwarz
  * License: GPL-3.0
