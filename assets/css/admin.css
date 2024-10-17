@@ -4,11 +4,11 @@
 
 /* Base Styles */
 .mm-wrap {
-    background: #1F2532; /* Dark background color */
+    background: #1F2532;
     padding: 40px;
     border-radius: 10px;
     font-family: 'Roboto', sans-serif;
-    color: #ECEFF4; /* Light text color for contrast */
+    color: #ECEFF4;
     margin: 40px;
     box-sizing: border-box;
     border: 1px solid #393E49;
@@ -55,7 +55,7 @@
 /* Tab Content */
 .mm-tab-content {
     display: none;
-    background: #2C313C; /* Slightly lighter than the main background */
+    background: #2C313C;
     padding: 30px;
     border-radius: 0 5px 5px 5px;
     border: 1px solid #393E49;
@@ -120,8 +120,9 @@
     box-sizing: border-box;
 }
 
-.form-table input[type="number"] {
-    width: 100px;
+.form-table input[type="number"],
+.form-table input[type="datetime-local"] {
+    width: 100%;
     background: #393E49;
     color: #ECEFF4;
     border: 1px solid #525864;
@@ -268,5 +269,22 @@
 }
 
 #mm-add-link-button {
+    margin-top: 10px;
+}
+
+/* New Styles for Additional Features */
+.mm-schedule-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.mm-schedule-fields input {
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.mm-visitor-count {
+    font-size: 14px;
+    color: #B0B5BD;
     margin-top: 10px;
 }

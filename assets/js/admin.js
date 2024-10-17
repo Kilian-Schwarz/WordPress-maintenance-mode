@@ -94,4 +94,13 @@ jQuery(document).ready(function($){
             $('#mm-preview-title').text($('input[name="mm_text"]').val() + ' - Maintenance Mode');
         }, 500);
     });
+
+    // Initialize Date-Time Pickers
+    $('input[type="datetime-local"]').each(function(){
+        var savedValue = $(this).attr('value');
+        if (!savedValue) {
+            var currentDateTime = new Date().toISOString().slice(0,16);
+            $(this).val(currentDateTime);
+        }
+    });
 });

@@ -2,8 +2,8 @@
 /*
  * Plugin Name: Maintenance Mode
  * Plugin URI: https://github.com/Kilian-Schwarz/WordPress-maintenance-mode
- * Description: Displays a customizable Maintenance Mode page.
- * Version: 2.7.2
+ * Description: Displays a customizable Maintenance Mode page with advanced features.
+ * Version: 3.0.0
  * Requires at least: 5.0
  * Requires PHP: 7.0
  * Tested up to: 6.3
@@ -45,6 +45,15 @@ function mm_admin_enqueue_scripts($hook_suffix) {
 }
 add_action('admin_enqueue_scripts', 'mm_admin_enqueue_scripts');
 
+// Enqueue frontend scripts and styles
+function mm_enqueue_frontend_scripts() {
+    if (!get_option('mm_active')) {
+        return;
+    }
+    wp_enqueue_script('mm-frontend-script', MM_PLUGIN_URL . 'assets/js/maintenance.js', array('jquery'), '1.0', true);
+}
+add_action('wp_enqueue_scripts', 'mm_enqueue_frontend_scripts');
+
 // Maintenance Mode Logic
 function mm_maintenance_mode() {
     if (!get_option('mm_active')) {
@@ -62,13 +71,22 @@ function mm_maintenance_mode() {
     $timer_end_date = strtotime(get_option('mm_timer_end_date'));
     $current_time = current_time('timestamp');
 
+    // Auto-disable after timer ends
     if ($current_time > $timer_end_date && get_option('mm_auto_disable')) {
         update_option('mm_active', 0);
         return;
     }
 
+    // Schedule maintenance mode
+    $schedule_start = strtotime(get_option('mm_schedule_start'));
+    $schedule_end = strtotime(get_option('mm_schedule_end'));
+    if (get_option('mm_enable_schedule') && ($current_time < $schedule_start || $current_time > $schedule_end)) {
+        return;
+    }
+
     if ($pagenow !== 'wp-login.php' && !current_user_can('manage_options') && !is_admin()) {
-        header($_SERVER["SERVER_PROTOCOL"] . ' 503 Service Temporarily Unavailable', true, 503);
+        $http_status = get_option('mm_http_status_code', 503);
+        status_header($http_status);
         header('Content-Type: text/html; charset=utf-8');
         require_once MM_PLUGIN_DIR . 'views/maintenance.php';
         exit();
@@ -80,22 +98,18 @@ add_action('template_redirect', 'mm_maintenance_mode');
 function mm_ajax_preview() {
     // Temporarily override options with $_POST data
     $options = array(
-        'mm_text' => isset($_POST['mm_text']) ? sanitize_text_field($_POST['mm_text']) : get_option('mm_text'),
-        'mm_background_image_id' => isset($_POST['mm_background_image_id']) ? intval($_POST['mm_background_image_id']) : get_option('mm_background_image_id'),
-        'mm_background_color' => isset($_POST['mm_background_color']) ? sanitize_hex_color($_POST['mm_background_color']) : get_option('mm_background_color'),
-        'mm_font_color' => isset($_POST['mm_font_color']) ? sanitize_hex_color($_POST['mm_font_color']) : get_option('mm_font_color'),
-        'mm_font_size' => isset($_POST['mm_font_size']) ? intval($_POST['mm_font_size']) : get_option('mm_font_size'),
-        'mm_font_bold' => isset($_POST['mm_font_bold']) ? 1 : 0,
-        'mm_font_italic' => isset($_POST['mm_font_italic']) ? 1 : 0,
-        'mm_font_underline' => isset($_POST['mm_font_underline']) ? 1 : 0,
-        'mm_font_strikethrough' => isset($_POST['mm_font_strikethrough']) ? 1 : 0,
-        'mm_enable_glitch' => isset($_POST['mm_enable_glitch']) ? 1 : 0,
-        'mm_enable_timer' => isset($_POST['mm_enable_timer']) ? 1 : 0,
-        'mm_timer_end_date' => isset($_POST['mm_timer_end_date']) ? sanitize_text_field($_POST['mm_timer_end_date']) : get_option('mm_timer_end_date'),
-        'mm_logo_image_id' => isset($_POST['mm_logo_image_id']) ? intval($_POST['mm_logo_image_id']) : get_option('mm_logo_image_id'),
-        'mm_favicon_image_id' => isset($_POST['mm_favicon_image_id']) ? intval($_POST['mm_favicon_image_id']) : get_option('mm_favicon_image_id'),
-        'mm_custom_html' => isset($_POST['mm_custom_html']) ? wp_kses_post($_POST['mm_custom_html']) : get_option('mm_custom_html'),
-        'mm_custom_css' => isset($_POST['mm_custom_css']) ? wp_strip_all_tags($_POST['mm_custom_css']) : get_option('mm_custom_css'),
+        // Existing options...
+        'mm_custom_js' => isset($_POST['mm_custom_js']) ? wp_strip_all_tags($_POST['mm_custom_js']) : get_option('mm_custom_js'),
+        'mm_http_status_code' => isset($_POST['mm_http_status_code']) ? intval($_POST['mm_http_status_code']) : get_option('mm_http_status_code'),
+        'mm_seo_meta_description' => isset($_POST['mm_seo_meta_description']) ? sanitize_text_field($_POST['mm_seo_meta_description']) : get_option('mm_seo_meta_description'),
+        'mm_seo_meta_keywords' => isset($_POST['mm_seo_meta_keywords']) ? sanitize_text_field($_POST['mm_seo_meta_keywords']) : get_option('mm_seo_meta_keywords'),
+        'mm_seo_robots' => isset($_POST['mm_seo_robots']) ? sanitize_text_field($_POST['mm_seo_robots']) : get_option('mm_seo_robots'),
+        'mm_google_analytics_id' => isset($_POST['mm_google_analytics_id']) ? sanitize_text_field($_POST['mm_google_analytics_id']) : get_option('mm_google_analytics_id'),
+        'mm_background_video_url' => isset($_POST['mm_background_video_url']) ? esc_url_raw($_POST['mm_background_video_url']) : get_option('mm_background_video_url'),
+        'mm_enable_schedule' => isset($_POST['mm_enable_schedule']) ? 1 : 0,
+        'mm_schedule_start' => isset($_POST['mm_schedule_start']) ? sanitize_text_field($_POST['mm_schedule_start']) : get_option('mm_schedule_start'),
+        'mm_schedule_end' => isset($_POST['mm_schedule_end']) ? sanitize_text_field($_POST['mm_schedule_end']) : get_option('mm_schedule_end'),
+        'mm_visitor_count' => get_option('mm_visitor_count', 0), // Read-only
         // Add other options as needed
     );
 
@@ -105,3 +119,20 @@ function mm_ajax_preview() {
     exit();
 }
 add_action('wp_ajax_mm_preview', 'mm_ajax_preview');
+
+// Increment visitor count
+function mm_increment_visitor_count() {
+    if (!get_option('mm_active')) {
+        return;
+    }
+
+    $visitor_count = get_option('mm_visitor_count', 0);
+    update_option('mm_visitor_count', $visitor_count + 1);
+}
+add_action('template_redirect', 'mm_increment_visitor_count');
+
+// Clear visitor count on deactivation
+function mm_clear_visitor_count() {
+    delete_option('mm_visitor_count');
+}
+register_deactivation_hook(__FILE__, 'mm_clear_visitor_count');

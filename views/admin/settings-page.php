@@ -40,9 +40,20 @@ function mm_register_settings() {
     register_setting('mm_settings_group', 'mm_custom_css');
     register_setting('mm_settings_group', 'mm_custom_html');
     register_setting('mm_settings_group', 'mm_ip_whitelist');
-    register_setting('mm_settings_group', 'mm_social_links'); // Als Array registrieren
+    register_setting('mm_settings_group', 'mm_social_links');
     register_setting('mm_settings_group', 'mm_logo_image_id');
     register_setting('mm_settings_group', 'mm_favicon_image_id');
+    // New settings
+    register_setting('mm_settings_group', 'mm_custom_js');
+    register_setting('mm_settings_group', 'mm_http_status_code');
+    register_setting('mm_settings_group', 'mm_seo_meta_description');
+    register_setting('mm_settings_group', 'mm_seo_meta_keywords');
+    register_setting('mm_settings_group', 'mm_seo_robots');
+    register_setting('mm_settings_group', 'mm_google_analytics_id');
+    register_setting('mm_settings_group', 'mm_background_video_url');
+    register_setting('mm_settings_group', 'mm_enable_schedule');
+    register_setting('mm_settings_group', 'mm_schedule_start');
+    register_setting('mm_settings_group', 'mm_schedule_end');
 }
 add_action('admin_init', 'mm_register_settings');
 
@@ -57,6 +68,9 @@ function mm_render_settings_page() {
                     <a href="#mm-tab-general" class="mm-nav-tab mm-nav-tab-active">Allgemein</a>
                     <a href="#mm-tab-design" class="mm-nav-tab">Design</a>
                     <a href="#mm-tab-advanced" class="mm-nav-tab">Erweitert</a>
+                    <a href="#mm-tab-seo" class="mm-nav-tab">SEO</a>
+                    <a href="#mm-tab-schedule" class="mm-nav-tab">Zeitplanung</a>
+                    <a href="#mm-tab-stats" class="mm-nav-tab">Statistiken</a>
                 </nav>
                 <form method="post" action="options.php" id="mm-settings-form">
                     <?php
@@ -104,6 +118,16 @@ function mm_render_settings_page() {
                                     </label>
                                 </td>
                             </tr>
+                            <tr>
+                                <th scope="row">HTTP-Statuscode</th>
+                                <td>
+                                    <select name="mm_http_status_code">
+                                        <option value="200" <?php selected(get_option('mm_http_status_code'), '200'); ?>>200 OK</option>
+                                        <option value="503" <?php selected(get_option('mm_http_status_code'), '503'); ?>>503 Service Unavailable</option>
+                                    </select>
+                                    <p class="description">Wähle den HTTP-Statuscode, der zurückgegeben werden soll.</p>
+                                </td>
+                            </tr>
                         </table>
                     </div>
                     <div id="mm-tab-design" class="mm-tab-content">
@@ -119,6 +143,13 @@ function mm_render_settings_page() {
                                         <button type="button" class="button mm-upload-button" data-target="mm_background_image_id">Bild auswählen</button>
                                         <button type="button" class="button mm-remove-button" data-target="mm_background_image_id" style="display: <?php echo $image_id ? 'inline-block' : 'none'; ?>;">Bild entfernen</button>
                                     </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Hintergrundvideo URL</th>
+                                <td>
+                                    <input type="url" name="mm_background_video_url" value="<?php echo esc_attr(get_option('mm_background_video_url', '')); ?>" class="regular-text" />
+                                    <p class="description">Füge die URL zu einem Hintergrundvideo hinzu (MP4, WebM, etc.).</p>
                                 </td>
                             </tr>
                             <tr>
@@ -195,6 +226,13 @@ function mm_render_settings_page() {
                                     <p class="description">Hier kannst du eigenes CSS hinzufügen, um die Wartungsseite zu stylen.</p>
                                 </td>
                             </tr>
+                            <tr>
+                                <th scope="row">Eigenes JavaScript</th>
+                                <td>
+                                    <textarea name="mm_custom_js" rows="5" class="large-text code"><?php echo esc_textarea(get_option('mm_custom_js', '')); ?></textarea>
+                                    <p class="description">Hier kannst du eigenes JavaScript hinzufügen, um zusätzliche Funktionalitäten zu implementieren.</p>
+                                </td>
+                            </tr>
                         </table>
                     </div>
                     <div id="mm-tab-advanced" class="mm-tab-content">
@@ -232,6 +270,81 @@ function mm_render_settings_page() {
                                     </div>
                                     <button type="button" class="button" id="mm-add-link-button">Link hinzufügen</button>
                                     <p class="description">Füge Links hinzu, die auf der Wartungsseite angezeigt werden. Wenn ein Feld leer ist, wird es nicht angezeigt.</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="mm-tab-seo" class="mm-tab-content">
+                        <table class="form-table">
+                            <!-- SEO Settings Fields -->
+                            <tr>
+                                <th scope="row">Meta Description</th>
+                                <td>
+                                    <textarea name="mm_seo_meta_description" rows="3" class="large-text code"><?php echo esc_textarea(get_option('mm_seo_meta_description', '')); ?></textarea>
+                                    <p class="description">Füge eine Meta Description für bessere SEO hinzu.</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Meta Keywords</th>
+                                <td>
+                                    <input type="text" name="mm_seo_meta_keywords" value="<?php echo esc_attr(get_option('mm_seo_meta_keywords', '')); ?>" class="regular-text" />
+                                    <p class="description">Füge Meta Keywords für bessere SEO hinzu, getrennt durch Kommas.</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Robots Meta Tag</th>
+                                <td>
+                                    <select name="mm_seo_robots">
+                                        <option value="index, follow" <?php selected(get_option('mm_seo_robots'), 'index, follow'); ?>>Index, Follow</option>
+                                        <option value="noindex, nofollow" <?php selected(get_option('mm_seo_robots'), 'noindex, nofollow'); ?>>Noindex, Nofollow</option>
+                                    </select>
+                                    <p class="description">Steuere, wie Suchmaschinen deine Seite während der Wartung crawlen sollen.</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="mm-tab-schedule" class="mm-tab-content">
+                        <table class="form-table">
+                            <!-- Schedule Settings Fields -->
+                            <tr>
+                                <th scope="row">Zeitplanung aktivieren</th>
+                                <td>
+                                    <label>
+                                        <input type="checkbox" name="mm_enable_schedule" value="1" <?php checked(1, get_option('mm_enable_schedule'), true); ?> />
+                                        Aktivieren
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Startdatum und -zeit</th>
+                                <td>
+                                    <input type="datetime-local" name="mm_schedule_start" value="<?php echo esc_attr(date('Y-m-d\TH:i', strtotime(get_option('mm_schedule_start', date('Y-m-d H:i:s'))))); ?>" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Enddatum und -zeit</th>
+                                <td>
+                                    <input type="datetime-local" name="mm_schedule_end" value="<?php echo esc_attr(date('Y-m-d\TH:i', strtotime(get_option('mm_schedule_end', date('Y-m-d H:i:s', strtotime('+1 day')))))); ?>" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="mm-tab-stats" class="mm-tab-content">
+                        <table class="form-table">
+                            <!-- Statistics Fields -->
+                            <tr>
+                                <th scope="row">Besucherzähler</th>
+                                <td>
+                                    <p class="mm-visitor-count">
+                                        Insgesamt <?php echo intval(get_option('mm_visitor_count', 0)); ?> Besucher haben die Wartungsseite aufgerufen.
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Google Analytics Tracking ID</th>
+                                <td>
+                                    <input type="text" name="mm_google_analytics_id" value="<?php echo esc_attr(get_option('mm_google_analytics_id', '')); ?>" class="regular-text" />
+                                    <p class="description">Füge deine Google Analytics Tracking ID hinzu (z.B. UA-XXXXX-Y).</p>
                                 </td>
                             </tr>
                         </table>
