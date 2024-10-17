@@ -52,6 +52,22 @@ jQuery(document).ready(function($){
         $('#mm-settings-form').trigger('change'); // Trigger change for preview update
     });
 
+    // Add Link Button
+    $('#mm-add-link-button').click(function(e){
+        e.preventDefault();
+        var linkField = $('<div class="mm-link-field">' +
+            '<input type="url" name="mm_social_links[]" value="" class="regular-text" />' +
+            '<button type="button" class="button mm-remove-link-button">Entfernen</button>' +
+            '</div>');
+        $('#mm-links-container').append(linkField);
+    });
+
+    // Remove Link Button
+    $('#mm-links-container').on('click', '.mm-remove-link-button', function(e){
+        e.preventDefault();
+        $(this).parent('.mm-link-field').remove();
+    });
+
     // Update Preview on Form Change
     $('#mm-settings-form').on('input change', 'input, select, textarea', function() {
         // Delay to prevent excessive reloads

@@ -40,7 +40,7 @@ function mm_register_settings() {
     register_setting('mm_settings_group', 'mm_custom_css');
     register_setting('mm_settings_group', 'mm_custom_html');
     register_setting('mm_settings_group', 'mm_ip_whitelist');
-    register_setting('mm_settings_group', 'mm_social_links');
+    register_setting('mm_settings_group', 'mm_social_links'); // Als Array registrieren
     register_setting('mm_settings_group', 'mm_logo_image_id');
     register_setting('mm_settings_group', 'mm_favicon_image_id');
 }
@@ -208,17 +208,30 @@ function mm_render_settings_page() {
                                 </td>
                             </tr>
                             <tr>
-                                <th scope="row">Soziale Medien Links</th>
+                                <th scope="row">Links</th>
                                 <td>
-                                    <?php
-                                    $social_links = get_option('mm_social_links', array());
-                                    $platforms = array('Facebook', 'Twitter', 'Instagram', 'LinkedIn', 'YouTube');
-                                    foreach ($platforms as $platform) {
-                                        $url = isset($social_links[strtolower($platform)]) ? $social_links[strtolower($platform)] : '';
-                                        echo "<p><label>{$platform} URL: <input type='url' name='mm_social_links[" . strtolower($platform) . "]' value='" . esc_attr($url) . "' class='regular-text' /></label></p>";
-                                    }
-                                    ?>
-                                    <p class="description">Füge Links zu deinen Social Media Profilen hinzu.</p>
+                                    <div id="mm-links-container">
+                                        <?php
+                                        $social_links = get_option('mm_social_links', array(''));
+                                        if (empty($social_links)) {
+                                            $social_links = array('');
+                                        }
+                                        foreach ($social_links as $index => $url) {
+                                            ?>
+                                            <div class="mm-link-field">
+                                                <input type="url" name="mm_social_links[]" value="<?php echo esc_attr($url); ?>" class="regular-text" />
+                                                <?php if ($index > 0): ?>
+                                                    <button type="button" class="button mm-remove-link-button">Entfernen</button>
+                                                <?php else: ?>
+                                                    <button type="button" class="button mm-remove-link-button" style="visibility: hidden;">Entfernen</button>
+                                                <?php endif; ?>
+                                            </div>
+                                            <?php
+                                        }
+                                        ?>
+                                    </div>
+                                    <button type="button" class="button" id="mm-add-link-button">Link hinzufügen</button>
+                                    <p class="description">Füge Links hinzu, die auf der Wartungsseite angezeigt werden. Wenn ein Feld leer ist, wird es nicht angezeigt.</p>
                                 </td>
                             </tr>
                         </table>
@@ -246,3 +259,4 @@ function mm_render_settings_page() {
     </div>
     <?php
 }
+?>

@@ -84,23 +84,13 @@ body {
 
 .social-links a {
   display: inline-block;
-  width: 40px;
-  height: 40px;
   margin: 0 10px;
-  position: relative;
-  text-decoration: none;
-  border-radius: 50%;
-  overflow: hidden;
-  background-color: #393E49;
-  color: #ECEFF4;
-  font-size: 20px;
-  line-height: 40px;
-  text-align: center;
-  transition: background 0.3s;
 }
 
-.social-links a:hover {
-  background-color: #6D727D;
+.social-links img {
+  width: 32px;
+  height: 32px;
+  border-radius: 5px;
 }
 
 /* Glitch Effect */

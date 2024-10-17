@@ -3,7 +3,6 @@
  * Maintenance Mode Preview Template
  */
 
-
 $text = $options['mm_text'];
 $background_image_id = $options['mm_background_image_id'];
 $background_image = $background_image_id ? wp_get_attachment_url($background_image_id) : '';
@@ -23,7 +22,7 @@ $logo_image_id = $options['mm_logo_image_id'];
 $logo_image = $logo_image_id ? wp_get_attachment_url($logo_image_id) : '';
 $favicon_image_id = $options['mm_favicon_image_id'];
 $favicon_image = $favicon_image_id ? wp_get_attachment_url($favicon_image_id) : '';
-$social_links = get_option('mm_social_links', array()); // Get social links
+$social_links = isset($_POST['mm_social_links']) ? $_POST['mm_social_links'] : get_option('mm_social_links', array());
 ?>
 <!DOCTYPE html>
 <html>
@@ -79,73 +78,21 @@ $social_links = get_option('mm_social_links', array()); // Get social links
 
     <?php if (!empty($social_links)): ?>
         <div class="social-links">
-            <?php foreach ($social_links as $platform => $url): ?>
+            <?php foreach ($social_links as $url): ?>
                 <?php if ($url): ?>
-                    <a href="<?php echo esc_url($url); ?>" target="_blank" class="<?php echo esc_attr(strtolower($platform)); ?>"></a>
+                    <?php
+                    $parsed_url = parse_url($url);
+                    $domain = isset($parsed_url['host']) ? $parsed_url['host'] : '';
+                    $favicon_url = 'https://www.google.com/s2/favicons?sz=64&domain=' . $domain;
+                    ?>
+                    <a href="<?php echo esc_url($url); ?>" target="_blank">
+                        <img src="<?php echo esc_url($favicon_url); ?>" alt="favicon" />
+                    </a>
                 <?php endif; ?>
             <?php endforeach; ?>
         </div>
     <?php endif; ?>
 </div>
-
-<!-- Include necessary JavaScript directly -->
-<?php if ($enable_timer && !empty($timer_end_date)): ?>
-<script>
-    // Countdown Script
-    (function(){
-        var endDate = new Date("<?php echo esc_js(date('M d, Y H:i:s', strtotime($timer_end_date))); ?>").getTime();
-        var countdown = document.getElementById("countdown");
-        var daysSpan = document.getElementById("days");
-        var hoursSpan = document.getElementById("hours");
-        var minutesSpan = document.getElementById("minutes");
-        var secondsSpan = document.getElementById("seconds");
-
-        function updateCountdown() {
-            var now = new Date().getTime();
-            var distance = endDate - now;
-
-            if (distance < 0) {
-                clearInterval(interval);
-                document.querySelector('.countdown p').innerText = "Wir sind wieder online!";
-                countdown.style.display = 'none';
-                return;
-            }
-
-            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
-            var minutes = Math.floor((distance / (1000 * 60)) % 60);
-            var seconds = Math.floor((distance / 1000) % 60);
-
-            daysSpan.textContent = ('0' + days).slice(-2);
-            hoursSpan.textContent = ('0' + hours).slice(-2);
-            minutesSpan.textContent = ('0' + minutes).slice(-2);
-            secondsSpan.textContent = ('0' + seconds).slice(-2);
-        }
-
-        updateCountdown();
-        var interval = setInterval(updateCountdown, 1000);
-    })();
-</script>
-<?php endif; ?>
-
-<?php if ($enable_glitch): ?>
-<style>
-    /* Glitch effect CSS */
-    .glitch-enabled {
-        position: relative;
-        color: <?php echo esc_attr($font_color); ?>;
-        animation: glitch-animation 2s infinite;
-    }
-
-    @keyframes glitch-animation {
-        0% {
-            clip: rect(44px, 9999px, 56px, 0);
-            transform: skew(0.5deg);
-        }
-        /* ... Add more keyframes for the glitch effect ... */
-    }
-</style>
-<?php endif; ?>
 
 </body>
 </html>

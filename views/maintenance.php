@@ -113,9 +113,16 @@ $social_links = get_option('mm_social_links', array());
 
     <?php if (!empty($social_links)): ?>
         <div class="social-links">
-            <?php foreach ($social_links as $platform => $url): ?>
+            <?php foreach ($social_links as $url): ?>
                 <?php if ($url): ?>
-                    <a href="<?php echo esc_url($url); ?>" target="_blank" class="<?php echo esc_attr(strtolower($platform)); ?>"></a>
+                    <?php
+                    $parsed_url = parse_url($url);
+                    $domain = isset($parsed_url['host']) ? $parsed_url['host'] : '';
+                    $favicon_url = 'https://www.google.com/s2/favicons?sz=64&domain=' . $domain;
+                    ?>
+                    <a href="<?php echo esc_url($url); ?>" target="_blank">
+                        <img src="<?php echo esc_url($favicon_url); ?>" alt="favicon" />
+                    </a>
                 <?php endif; ?>
             <?php endforeach; ?>
         </div>
