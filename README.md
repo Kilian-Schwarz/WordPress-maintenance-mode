@@ -3,7 +3,7 @@
 Ein leistungsstarkes und anpassbares Wartungsmodus-Plugin für WordPress, das es ermöglicht, eine vollständig personalisierte Wartungsseite mit erweiterten Funktionen anzuzeigen.
 
 
-##Funktionen
+## Funktionen
 
 •	Anpassbare Wartungsseite: Einfache Anpassung von Text, Logo, Hintergrundbild und mehr.
 •	Countdown-Timer: Zeige einen Countdown-Timer an, der anzeigt, wann die Seite wieder online ist.
@@ -18,15 +18,15 @@ Ein leistungsstarkes und anpassbares Wartungsmodus-Plugin für WordPress, das es
 •	Benutzerdefinierte HTTP-Statuscodes: Wähle den HTTP-Statuscode, der zurückgegeben werden soll (z.B. 200 OK, 503 Service Unavailable).
 •	Google Analytics Integration: Füge deine Google Analytics Tracking-ID hinzu, um den Traffic zu überwachen.
 
-##Installation
+## Installation
 
 1.	Plugin hochladen: Lade die maintenance-mode.zip Datei über den WordPress Plugin-Uploader hoch oder entpacke sie und lade den maintenance-mode Ordner via FTP in das Verzeichnis /wp-content/plugins/.
 2.	Plugin aktivieren: Gehe zum Menüpunkt ‘Plugins’ in WordPress und aktiviere das ‘Maintenance Mode’ Plugin.
 3.	Einstellungen aufrufen: Navigiere zu Einstellungen > Maintenance Mode, um das Plugin zu konfigurieren.
 
-##Verwendung
+## Verwendung
 
-###Allgemeine Einstellungen
+### Allgemeine Einstellungen
 
 •	Maintenance Mode aktivieren: Aktiviere oder deaktiviere den Wartungsmodus.
 •	Angezeigter Text: Passe die Hauptnachricht an, die auf der Wartungsseite angezeigt wird.
@@ -34,7 +34,7 @@ Ein leistungsstarkes und anpassbares Wartungsmodus-Plugin für WordPress, das es
 •	Links: Füge mehrere Links hinzu, die auf der Wartungsseite angezeigt werden.
 •	Besucherzähler: Entscheide, ob der Besucherzähler für Besucher sichtbar sein soll.
 
-###Design-Einstellungen
+### Design-Einstellungen
 
 •	Hintergrundbild: Lade ein Hintergrundbild für die Wartungsseite hoch.
 •	Hintergrundvideo URL: Füge eine URL zu einem Hintergrundvideo hinzu (MP4, WebM, etc.).
@@ -46,7 +46,7 @@ Ein leistungsstarkes und anpassbares Wartungsmodus-Plugin für WordPress, das es
 •	Glitch-Effekt: Aktiviere oder deaktiviere den Glitch-Effekt auf der Hauptnachricht.
 •	Animation aktivieren: Aktiviere oder deaktiviere Seitenanimationen.
 
-###Zeitplaneinstellungen
+### Zeitplaneinstellungen
 
 •	Zeitplanung aktivieren: Aktiviere die Zeitplanung, um den Wartungsmodus automatisch während eines bestimmten Zeitraums zu aktivieren.
 •	Startdatum und -zeit: Lege das Datum und die Uhrzeit fest, wann der Wartungsmodus starten soll.
@@ -55,7 +55,7 @@ Ein leistungsstarkes und anpassbares Wartungsmodus-Plugin für WordPress, das es
 •	Enddatum des Timers: Setze das Enddatum und die Uhrzeit für den Countdown-Timer.
 •	Automatische Deaktivierung: Deaktiviere den Wartungsmodus automatisch, wenn der Countdown-Timer endet.
 
-###Erweiterte Einstellungen
+### Erweiterte Einstellungen
 
 •	Eigenes HTML: Füge benutzerdefiniertes HTML zur Wartungsseite hinzu.
 •	Eigenes CSS: Integriere benutzerdefiniertes CSS in die Wartungsseite.
@@ -63,29 +63,29 @@ Ein leistungsstarkes und anpassbares Wartungsmodus-Plugin für WordPress, das es
 •	IP-Whitelist: Gib IP-Adressen an, die den Wartungsmodus umgehen können.
 •	HTTP-Statuscode: Wähle den HTTP-Statuscode, der den Besuchern zurückgegeben wird.
 
-###SEO-Einstellungen
+### SEO-Einstellungen
 
 •	Meta Description: Füge eine Meta-Beschreibung für bessere SEO hinzu.
 •	Meta Keywords: Füge Meta-Keywords hinzu, getrennt durch Kommas.
 •	Robots Meta Tag: Kontrolliere, wie Suchmaschinen deine Seite während der Wartung crawlen (z.B. index, noindex).
 
-###Statistiken
+### Statistiken
 
 •	Besucherstatistiken: Sieh dir grafische Statistiken der Besucher während der Wartung an.
 •	Statistiken herunterladen: Lade die Besucherstatistiken als CSV-Datei herunter.
 •	Statistiken zurücksetzen: Setze alle Besucherstatistiken zurück.
 •	Google Analytics Tracking ID: Füge deine Google Analytics ID hinzu, um Besucherdaten zu verfolgen.
 
-###Screenshots
+### Screenshots
 
 1.	Allgemeine Einstellungen Tab: 
 2.	Design-Einstellungen Tab: 
 3.	Vorschau der Wartungsseite: 
 4.	Besucherstatistiken Diagramm: 
 
-##Änderungsprotokoll
+## Änderungsprotokoll
 
-###Version 3.2.0
+### Version 3.2.0
 
 •	Hinzufügen von grafischen Besucherstatistiken mit Chart.js.
 •	Verbesserung der Download- und Zurücksetzfunktionalitäten für Statistiken.
@@ -93,20 +93,20 @@ Ein leistungsstarkes und anpassbares Wartungsmodus-Plugin für WordPress, das es
 •	Anpassung der Optionen unter dem Tab “Design”.
 •	Behebung von Problemen mit der Vorschauanzeige.
 
-###Frühere Versionen
+### Frühere Versionen
 
 •	Version 3.1.0: Hintergrundvideo-Unterstützung, Besucherzähler und benutzerdefinierte HTTP-Statuscodes hinzugefügt.
 •	Version 3.0.0: Erster Release mit anpassbarer Wartungsseite, Countdown-Timer, Zeitplanung und SEO-Einstellungen.
 
-##Lizenz
+## Lizenz
 
 Dieses Plugin ist unter der GNU General Public License v3.0 lizenziert.
 
-##Mitwirken
+## Mitwirken
 
 Beiträge sind willkommen! Bitte forke das Repository und sende einen Pull-Request mit deinen Änderungen.
 
-##Support
+## Support
 
 Für Support und Fragen eröffne bitte ein Issue auf dem GitHub Repository.
 
