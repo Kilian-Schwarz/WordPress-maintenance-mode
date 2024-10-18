@@ -1,4 +1,4 @@
-#Maintenance Mode WordPress Plugin
+# Maintenance Mode WordPress Plugin
 
 Ein leistungsstarkes und anpassbares Wartungsmodus-Plugin für WordPress, das es ermöglicht, eine vollständig personalisierte Wartungsseite mit erweiterten Funktionen anzuzeigen.
 
