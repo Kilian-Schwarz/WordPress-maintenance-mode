@@ -98,6 +98,14 @@ Ein leistungsstarkes und anpassbares Wartungsmodus-Plugin für WordPress, das es
 •	Version 3.1.0: Hintergrundvideo-Unterstützung, Besucherzähler und benutzerdefinierte HTTP-Statuscodes hinzugefügt.
 •	Version 3.0.0: Erster Release mit anpassbarer Wartungsseite, Countdown-Timer, Zeitplanung und SEO-Einstellungen.
 
+## Haftungsausschluss
+
+Dieses Plugin wird “wie besehen” ohne jegliche ausdrückliche oder stillschweigende Gewährleistung bereitgestellt. Die Verwendung erfolgt auf eigene Gefahr. Der Autor übernimmt keine Verantwortung oder Haftung für direkte, indirekte, zufällige oder Folgeschäden, die durch die Nutzung oder die Unfähigkeit zur Nutzung dieses Plugins entstehen können.
+
+Es liegt in der Verantwortung des Nutzers, sicherzustellen, dass das Plugin seinen Anforderungen entspricht und ordnungsgemäß funktioniert. Der Autor haftet nicht für Verluste oder Schäden, einschließlich, aber nicht beschränkt auf Datenverlust, entgangenen Gewinn oder Geschäftsunterbrechung, die durch die Verwendung dieses Plugins entstehen.
+
+Durch die Installation und Nutzung dieses Plugins erklärst du dich mit diesem Haftungsausschluss einverstanden und verzichtest auf jegliche Ansprüche gegen den Autor in Bezug auf die Nutzung des Plugins.
+
 ## Lizenz
 
 Dieses Plugin ist unter der GNU General Public License v3.0 lizenziert.
