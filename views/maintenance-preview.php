@@ -3,71 +3,57 @@
  * Maintenance Mode Preview Template
  */
 
-$text = $options['mm_text'];
-$background_image_id = $options['mm_background_image_id'];
-$background_image = $background_image_id ? wp_get_attachment_url($background_image_id) : '';
-$background_color = $options['mm_background_color'];
-$font_color = $options['mm_font_color'];
-$font_size = $options['mm_font_size'];
-$font_bold = $options['mm_font_bold'] ? 'bold' : 'normal';
-$font_italic = $options['mm_font_italic'] ? 'italic' : 'normal';
-$font_underline = $options['mm_font_underline'] ? 'underline' : 'none';
-$font_strikethrough = $options['mm_font_strikethrough'] ? 'line-through' : 'none';
-$enable_glitch = $options['mm_enable_glitch'];
-$enable_timer = $options['mm_enable_timer'];
-$timer_end_date = $options['mm_timer_end_date'];
-$custom_html = $options['mm_custom_html'];
-$custom_css = $options['mm_custom_css'];
-$custom_js = $options['mm_custom_js'];
-$logo_image_id = $options['mm_logo_image_id'];
-$logo_image = $logo_image_id ? wp_get_attachment_url($logo_image_id) : '';
-$favicon_image_id = $options['mm_favicon_image_id'];
-$favicon_image = $favicon_image_id ? wp_get_attachment_url($favicon_image_id) : '';
-$social_links = isset($_POST['mm_social_links']) ? $_POST['mm_social_links'] : get_option('mm_social_links', array());
-$background_video_url = $options['mm_background_video_url'];
-$seo_meta_description = $options['mm_seo_meta_description'];
-$seo_meta_keywords = $options['mm_seo_meta_keywords'];
-$seo_robots = $options['mm_seo_robots'];
-$google_analytics_id = $options['mm_google_analytics_id'];
+// Extract options
+extract($options);
+
+$background_image = $mm_background_image_id ? wp_get_attachment_url($mm_background_image_id) : '';
+$logo_image = $mm_logo_image_id ? wp_get_attachment_url($mm_logo_image_id) : '';
+$favicon_image = $mm_favicon_image_id ? wp_get_attachment_url($mm_favicon_image_id) : '';
+
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-    <title><?php echo esc_html($text); ?> - Maintenance Mode</title>
+    <title><?php echo esc_html($mm_text); ?> - Maintenance Mode</title>
     <?php if ($favicon_image): ?>
         <link rel="icon" href="<?php echo esc_url($favicon_image); ?>" sizes="32x32" />
     <?php endif; ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?php if ($seo_meta_description): ?>
-        <meta name="description" content="<?php echo esc_attr($seo_meta_description); ?>">
+    <?php if ($mm_seo_meta_description): ?>
+        <meta name="description" content="<?php echo esc_attr($mm_seo_meta_description); ?>">
     <?php endif; ?>
-    <?php if ($seo_meta_keywords): ?>
-        <meta name="keywords" content="<?php echo esc_attr($seo_meta_keywords); ?>">
+    <?php if ($mm_seo_meta_keywords): ?>
+        <meta name="keywords" content="<?php echo esc_attr($mm_seo_meta_keywords); ?>">
     <?php endif; ?>
-    <?php if ($seo_robots): ?>
-        <meta name="robots" content="<?php echo esc_attr($seo_robots); ?>">
+    <?php if ($mm_seo_robots): ?>
+        <meta name="robots" content="<?php echo esc_attr($mm_seo_robots); ?>">
     <?php endif; ?>
     <style>
         /* Include necessary CSS directly */
         <?php include plugin_dir_path(__FILE__) . '../assets/css/maintenance.css'; ?>
         body {
-            color: <?php echo esc_attr($font_color); ?>;
+            color: <?php echo esc_attr($mm_font_color); ?>;
         }
         .maintenance-message {
-            font-size: <?php echo intval($font_size); ?>px;
-            font-weight: <?php echo esc_attr($font_bold); ?>;
-            font-style: <?php echo esc_attr($font_italic); ?>;
-            text-decoration: <?php echo esc_attr($font_underline . ' ' . $font_strikethrough); ?>;
+            font-size: <?php echo intval($mm_font_size); ?>px;
+            font-weight: <?php echo esc_attr($mm_font_bold ? 'bold' : 'normal'); ?>;
+            font-style: <?php echo esc_attr($mm_font_italic ? 'italic' : 'normal'); ?>;
+            text-decoration: <?php echo esc_attr(($mm_font_underline ? 'underline' : '') . ' ' . ($mm_font_strikethrough ? 'line-through' : '')); ?>;
         }
-        <?php echo $custom_css; // Custom CSS ?>
+        <?php if (!$mm_show_animation): ?>
+        .maintenance-container {
+            animation: none;
+        }
+        <?php endif; ?>
+        <?php echo $mm_custom_css; // Custom CSS ?>
     </style>
 </head>
-<body style="<?php echo $background_image ? 'background-image: url(' . esc_url($background_image) . ');' : 'background-color: ' . esc_attr($background_color) . ';'; ?>">
+<body style="<?php echo $background_image ? 'background-image: url(' . esc_url($background_image) . ');' : 'background-color: ' . esc_attr($mm_background_color) . ';'; ?>">
 
-<?php if ($background_video_url): ?>
+<?php if ($mm_background_video_url): ?>
     <div class="video-background">
         <video autoplay muted loop>
-            <source src="<?php echo esc_url($background_video_url); ?>" type="video/mp4">
+            <source src="<?php echo esc_url($mm_background_video_url); ?>" type="video/mp4">
         </video>
     </div>
 <?php endif; ?>
@@ -77,11 +63,11 @@ $google_analytics_id = $options['mm_google_analytics_id'];
         <img src="<?php echo esc_url($logo_image); ?>" alt="Logo" class="maintenance-logo">
     <?php endif; ?>
 
-    <div class="maintenance-message <?php echo $enable_glitch ? 'glitch-enabled' : ''; ?>" title="<?php echo esc_attr($text); ?>">
-        <?php echo esc_html($text); ?>
+    <div class="maintenance-message <?php echo $mm_enable_glitch ? 'glitch-enabled' : ''; ?>" title="<?php echo esc_attr($mm_text); ?>">
+        <?php echo esc_html($mm_text); ?>
     </div>
 
-    <?php if ($enable_timer && !empty($timer_end_date)): ?>
+    <?php if ($mm_enable_timer && !empty($mm_timer_end_date)): ?>
     <div class="countdown">
         <p>Wir sind zurück in:</p>
         <div id="countdown">
@@ -93,15 +79,15 @@ $google_analytics_id = $options['mm_google_analytics_id'];
     </div>
     <?php endif; ?>
 
-    <?php if ($custom_html): ?>
+    <?php if ($mm_custom_html): ?>
         <div class="custom-html">
-            <?php echo $custom_html; // Custom HTML ?>
+            <?php echo $mm_custom_html; // Custom HTML ?>
         </div>
     <?php endif; ?>
 
-    <?php if (!empty($social_links)): ?>
+    <?php if (!empty($mm_social_links)): ?>
         <div class="social-links">
-            <?php foreach ($social_links as $url): ?>
+            <?php foreach ($mm_social_links as $url): ?>
                 <?php if ($url): ?>
                     <?php
                     $parsed_url = parse_url($url);
@@ -116,16 +102,22 @@ $google_analytics_id = $options['mm_google_analytics_id'];
         </div>
     <?php endif; ?>
 
-    <div class="visitor-count">
-        Insgesamt <?php echo intval($options['mm_visitor_count']); ?> Besucher haben diese Seite aufgerufen.
-    </div>
+    <?php if ($mm_show_visitor_count): ?>
+        <?php
+        $visitor_log = get_option('mm_visitor_log', array());
+        $total_visitors = array_sum($visitor_log);
+        ?>
+        <div class="visitor-count">
+            Insgesamt <?php echo intval($total_visitors); ?> Besucher haben diese Seite aufgerufen.
+        </div>
+    <?php endif; ?>
 </div>
 
-<?php if ($enable_timer && !empty($timer_end_date)): ?>
+<?php if ($mm_enable_timer && !empty($mm_timer_end_date)): ?>
 <script>
     // Countdown Script
     (function(){
-        var endDate = new Date("<?php echo esc_js(date('M d, Y H:i:s', strtotime($timer_end_date))); ?>");
+        var endDate = new Date("<?php echo esc_js(date('M d, Y H:i:s', strtotime($mm_timer_end_date))); ?>");
         var countdown = document.getElementById("countdown");
         var daysSpan = document.getElementById("days");
         var hoursSpan = document.getElementById("hours");
@@ -160,20 +152,20 @@ $google_analytics_id = $options['mm_google_analytics_id'];
 </script>
 <?php endif; ?>
 
-<?php if ($google_analytics_id): ?>
+<?php if ($mm_google_analytics_id): ?>
 <!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo esc_attr($google_analytics_id); ?>"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo esc_attr($mm_google_analytics_id); ?>"></script>
 <script>
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', '<?php echo esc_js($google_analytics_id); ?>');
+gtag('config', '<?php echo esc_js($mm_google_analytics_id); ?>');
 </script>
 <?php endif; ?>
 
-<?php if ($custom_js): ?>
+<?php if ($mm_custom_js): ?>
 <script>
-    <?php echo $custom_js; ?>
+    <?php echo $mm_custom_js; ?>
 </script>
 <?php endif; ?>
 

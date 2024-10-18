@@ -103,4 +103,66 @@ jQuery(document).ready(function($){
             $(this).val(currentDateTime);
         }
     });
+
+    // Reset Statistics
+    $('#mm-reset-stats-button').click(function(e){
+        e.preventDefault();
+        if (confirm('Möchtest du die Statistiken wirklich zurücksetzen?')) {
+            $.post(mmAjax.ajax_url, { action: 'mm_reset_statistics' }, function(response){
+                if (response.success) {
+                    alert('Statistiken wurden zurückgesetzt.');
+                    location.reload();
+                } else {
+                    alert('Fehler beim Zurücksetzen der Statistiken.');
+                }
+            });
+        }
+    });
+
+    // Download Statistics
+    $('#mm-download-stats-button').click(function(e){
+        e.preventDefault();
+        window.location.href = mmAjax.ajax_url + '?action=mm_download_statistics';
+    });
+
+    // Display Statistics Chart
+    if (typeof Chart !== 'undefined' && $('#mm-stats-chart').length) {
+        $.post(mmAjax.ajax_url, { action: 'mm_get_statistics' }, function(response){
+            if (response.success) {
+                var ctx = document.getElementById('mm-stats-chart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: response.data.dates,
+                        datasets: [{
+                            label: 'Besucher',
+                            data: response.data.counts,
+                            borderColor: '#6D727D',
+                            backgroundColor: 'rgba(109, 114, 125, 0.5)',
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Datum'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Anzahl der Besucher'
+                                },
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            } else {
+                $('#mm-stats-chart').replaceWith('<p>Keine Daten verfügbar.</p>');
+            }
+        });
+    }
 });
